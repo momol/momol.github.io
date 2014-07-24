@@ -1,0 +1,35 @@
+---
+layout: default
+title: 固定边栏滚动效果jquery
+---
+<style>
+	#left{height: 2000px;width: 60%;float: left;background: #fc0;opacity: .6;}
+	#right{height: 1000px;width: 35%;float: right;background: #ff0;opacity: .6;}
+	#right.fixed{position: fixed;top: 0;right: 0;}
+</style>
+<div id="left">left</div>
+<div id="right">right</div>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+	var jWindow=$(window);
+	jWindow.scroll(function () {
+		var scrollHeight=jWindow.scrollTop();
+		var screenHeight=jWindow.height();
+		var sideHeight=$('#right').height();
+		if(scrollHeight+screenHeight>sideHeight){
+			$('#right').css({
+				'position':'fixed',
+				'top':-(sideHeight-screenHeight),
+				'right':0
+			});
+		}else{
+			$('#right').css('position','static')
+		}
+	});
+	jWindow.onload=function(){
+		jWindow.trigger('scroll');
+	}
+	jWindow.resize=function(){
+		jWindow.trigger('scroll');
+	}
+</script>

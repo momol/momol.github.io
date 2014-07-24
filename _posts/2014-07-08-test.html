@@ -1,0 +1,31 @@
+---
+layout: default
+title: CSS3 3D特效test
+---
+<style>
+	#container{margin:200px auto;width: 200px;height: 200px;-webkit-perspective:800;-webkit-perspective-origin:50% 50%;}
+	#wrapper{-webkit-transform-style:preserve-3d;position: relative;-webkit-transform-origin:50%;-webkit-transform:rotateX(45deg) rotateY(60deg);}
+	.box{opacity:.95;width: 200px;height: 200px;position: absolute;background-color: #666;font-size: 200px;line-height: 200px;color: #fff;text-align: center;border-radius: 10px;}
+	#box1{background-color: #69c;-webkit-transform:rotateX(90deg) translateZ(100px);}
+	#box2{background-color: #9c6;-webkit-transform:rotateX(270deg) translateZ(100px);}
+	#box3{background-color: #96c;-webkit-transform:rotateY(90deg) translateZ(100px);}
+	#box4{background-color: #6c9;-webkit-transform:rotateY(270deg) translateZ(100px);}
+	#box5{background-color: #c96;-webkit-transform:translateZ(-100px);}
+	#box6{background-color: #c69;-webkit-transform:translateZ(100px);}
+	/* #wrapper{-webkit-animation:z 5s linear infinite;} */
+	@-webkit-keyframes z{
+		0%{-webkit-transform:rotateX(0deg) rotateY(360deg);}
+		100%{-webkit-transform:rotateX(360deg) rotateY(0deg);}
+	}
+</style>
+
+<div id="container">
+	<div id="wrapper">
+		<div class="box" id="box1">1</div>
+		<div class="box" id="box2">2</div>
+		<div class="box" id="box3">3</div>
+		<div class="box" id="box4">4</div>
+		<div class="box" id="box5">5</div>
+		<div class="box" id="box6">6</div>
+	</div>
+</div>

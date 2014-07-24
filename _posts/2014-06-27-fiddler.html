@@ -1,0 +1,36 @@
+---
+layout: default
+title: fiddler
+---
+<h2>代理模式</h2>
+<ul>
+	<li>
+		<strong>流模式（straming）</strong>
+		实时把服务器数据返回给客户端，更接近浏览器本身实现效果</li>
+	<li>
+		<strong>缓冲模式（buffering）</strong>
+		http请求所有的数据都准备好之后才把数据返回给客户端</li>
+</ul>
+<h2>使用场景</h2>
+<ul>
+	<li>
+		<strong>开发环境host配置</strong>
+		通常情况下，配置host需改系统文件很不方便；在多个开发环境下切换很低效。Fiddler提供了相对高效的host配置方法。
+	</li>
+	<li>
+		<strong>前后端接口调试</strong>
+		通常情况下，调试前后端接口需真实的环境、一大堆假数据、写JavaS代码。Fiddler只需一个UI界面进行配置即可。
+	</li>
+	<li>
+		<strong>线上bugfix</strong>
+		Fiddler可将发布文件代理到本地，快速定位线上bug.
+	</li>
+	<li>
+		<strong>性能分析和优化</strong>
+		Fiddler会提供请求的实际图，清晰明了需要优化的部分。
+	</li>
+</ul>
+<h2>延迟加载</h2>
+<p>oSession["request-trickle-delay"]="3000";</p>
+<h2>延迟服务器响应</h2>
+<p>oSession["response-trickle-delay"]="3000";</p>

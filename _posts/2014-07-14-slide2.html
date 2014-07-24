@@ -1,0 +1,128 @@
+---
+layout: default
+title: 焦点轮播图slide-jquery
+---
+<style>
+	*{margin: 0;padding: 0;}
+	#slide{
+		width: 600px;height: 300px;overflow: hidden;
+		position: relative;
+		background-color: #ddd;
+		border: 5px solid #eee;border-radius: 10px;
+	}
+	#list{
+		position: absolute;left:0;
+		width: 9999px;
+	}
+	#list li{
+		display: block;float: left;width: 600px;height: 300px;
+		background-color: #fff;
+	}
+	#buttons{
+		position: absolute;bottom: 30px;left: 50%;
+		margin-left: -86px;
+	}
+	#buttons li{
+		background-color: #ddd;
+		cursor: pointer;
+		display: block;width: 10px;height: 10px;
+		border-radius: 50%;border: 1px solid #aaa;
+		float: left;
+		margin: 5px 10px;
+		text-indent:-9999px;
+	}
+	#buttons li.on{
+		background-color: #09c;
+	}
+	.arrow{
+		position: absolute;top: 50%;
+		margin-top: -10px;
+	}
+	#left{
+		left:10px;
+	}
+	#right{
+		right:10px;
+	}
+</style>
+<div id="slide">
+	<ul id="list" style="left:0px;">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+	<ul id="buttons">
+		<li data-index="1" class="on">1</li>
+		<li data-index="2">2</li>
+		<li data-index="3">3</li>
+		<li data-index="4">4</li>
+		<li data-index="5">5</li>
+		<li data-index="6">6</li>
+	</ul>
+	<a href="javascript:;" id="left" class="arrow">left</a>
+	<a href="javascript:;" id="right" class="arrow">right</a>
+</div>
+<script src="/style/base/jquery/jquery.min.js"></script>
+<script>
+$(function(){
+	var slide=$('#slide'),
+			list=$('#list'),
+			buttons=$('#buttons>li'),
+			leftArrow=$('#left'),
+			rightArrow=$('#right'),
+			index=1,
+			len=5,
+			timer;
+	function showButton(){
+		buttons.eq(index-1).addClass('on').siblings().removeClass('on');
+	}
+	function animate(offset){
+		var left=parseInt(list.css('left'))+offset;
+		if(left>0){
+			left=-offset*len;
+		}else if(left<-600*len){
+			left=0
+		}
+		list.animate({'left':left});
+
+	}
+	rightArrow.on('click',function(){
+		if(list.is(':animated'))
+			return;
+		if(index==6){
+			index=1;
+		}else {
+			index+=1;
+		}
+		console.log(index)
+		showButton();
+		animate(-600);
+	});
+	leftArrow.on('click',function(){
+		if(list.is(':animated'))
+			return;
+		if(index==1){
+			index=6;
+		}else {
+			index-=1;
+		}
+		console.log(index)
+		showButton();
+		animate(600);
+	});
+	buttons.each(function(){
+		$(this).on('click',function(){
+		if(list.is(':animated')||$(this).attr('calss')=='on')
+			return;
+			var myIndex=parseInt($(this).attr('data-index'));
+			var offset=-600*parseInt(myIndex-index);
+			index=myIndex;
+			showButton();
+			animate(offset);
+		})
+	})
+});
+</script>

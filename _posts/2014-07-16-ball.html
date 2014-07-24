@@ -1,0 +1,42 @@
+---
+layout: default
+title: 小球实验---炫丽的倒计时效果Canvas绘图与动画基础
+---
+
+<canvas id="canvas" style="border:1px solid #eee;margin:0 auto;">当前浏览器不支持canvas请更换浏览器</canvas>
+<script>
+	var ball={x:512,y:100,r:20,g:2,vx:-4,vy:-10,color:'#005588'};
+	window.onload=function(){
+		var canvas=document.getElementById('canvas');
+
+		canvas.width=600;
+		canvas.height=400;
+		var context=canvas.getContext('2d');
+		setInterval(function(){
+			render(context);
+			update();
+		},50)
+	}
+	function update(){
+		ball.x+=ball.vx;
+		ball.y+=ball.vy;
+		ball.vy+=ball.g;
+		if(ball.y>=400-ball.r){
+			ball.y=400-ball.r;
+			ball.vy=-ball.vy*.7;
+		}
+		if(ball.x<ball.r){
+			ball.vx=2;
+			ball.y=400-ball.r;
+			ball.g=ball.vy=0;
+		}
+	}
+	function render(cxt){
+		cxt.clearRect(0,0,cxt.canvas.width,cxt.canvas.height);
+		cxt.fillStyle='blue';
+		cxt.beginPath();
+		cxt.arc(ball.x,ball.y,ball.r,0,2*Math.PI);
+		cxt.closePath();
+		cxt.fill();
+	}
+</script>

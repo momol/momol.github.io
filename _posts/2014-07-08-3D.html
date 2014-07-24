@@ -1,0 +1,106 @@
+---
+layout: default
+title: CSS3 3D特效
+---
+<a href="demo.html">demo1</a>
+<a href="demo2.html">demo2</a>
+<a href="test.html">demo2</a>
+<h2>PART1 transition</h2>
+<p>transition:<过渡属性名称property><过渡时间delay><过渡模式timing-function></p>
+<ul>
+	<li>-webkit-transition</li>
+	<li>-mz-transition</li>
+	<li>-o-transition</li>
+</ul>
+<style>
+	#block{width: 200px;height: 200px;background-color: #69c;margin:20px;-webkit-transition:background-color 3s;}
+	#block:hover{background-color: red;}
+</style>
+<div id="block"></div>
+<p>多个属性过渡效果</p>
+<ul>
+	<li>-webkit-transition:<属性1><时间1>,<属性2><时间2>,...	</li>
+	<li>-webkit-transition:<属性1><时间1></li>
+	<li>-webkit-transition:<属性2><时间2></li>
+</ul>
+<p><strong>过渡模式</strong></p>
+<ul>
+	<li>ease 缓慢开始，缓慢结束</li>
+	<li>linear 匀速</li>
+	<li>ease-in 缓慢开始</li>
+	<li>ease-out 缓慢结束</li>
+	<li>ease-in-out 缓慢开始，缓慢结束（和ease稍有区别）</li>
+</ul>
+<style>
+	.pregress-bar{margin: 20px 0;width: 100px;color: #fff;height: 25px;background-color: #69c;text-align: center;}
+	.pregress-bar:hover{width: 500px;}
+	#bar1{-webkit-transition:width 2s ease;}
+	#bar2{-webkit-transition:width 2s ease-in;}
+	#bar3{-webkit-transition:width 2s ease-out;}
+	#bar4{-webkit-transition:width 2s ease-in-out;}
+	#bar5{-webkit-transition:width 2s linear;}
+	#experiment{-webkit-perspective:800;-webkit-perspective:50% 50%;-webkit-transform-style:-webkit-preserve-3d;}
+	#block2{width: 200px;height: 200px;background-color: #69c;margin: 10px auto;-webkit-transform:rotateX(45deg);}
+	.range-control{width: 500px;}
+	input[type="range"] {
+		-webkit-appearance: none;
+	  -webkit-box-shadow: 0 1px 0 0px #424242, 
+	      0 1px 0 #060607 inset,
+	      0px 2px 10px 0px black inset,
+	      1px 0px 2px rgba(0, 0, 0, 0.4) inset,
+	      0 0px 1px rgba(0, 0, 0, 0.6) inset;
+	  margin-top: 2px;
+	  background-color: #272728;
+	  border-radius: 15px;
+	  width: 400px;
+	}
+	input[type="range"]::-webkit-slider-thumb {
+	  -webkit-appearance: none;
+	  cursor: default;
+	  top: 1px;
+	  height: 9px;
+	  width: 20px;
+	  background: none repeat scroll 0 0 #777;
+	  border-radius: 15px;
+	  -webkit-box-shadow: 0 -1px 1px black inset;
+	}
+</style>
+<div id="wrapper">
+	<div class="pregress-bar" id="bar1">ease</div>
+	<div class="pregress-bar" id="bar2">ease-in</div>
+	<div class="pregress-bar" id="bar3">ease-out</div>
+	<div class="pregress-bar" id="bar4">ease-in-out</div>
+	<div class="pregress-bar" id="bar5">linear</div>
+</div>
+<h2>PART2 使用CSS3.0创建简单的3D场景</h2>
+<ul>
+	<li>-webkit-perspective:800;</li>
+	<li>-webkit-perspective-origin:50% 50%;</li>
+</ul>
+<p><strong>使用transform属性调整元素</strong> </p>
+	<pre> -webkit-transform-style:-webkit-preserve-3d; 
+ -translate(translateX,translateY,translateZ) px 
+ -rotate(rotaeX,rotaeY,rotateZ) deg</pre>
+ <script>
+ function rotate () {
+ 	var x=document.getElementById('rotatex').value;
+ 	var y=document.getElementById('rotatey').value;
+ 	var z=document.getElementById('rotatez').value;
+ 	document.getElementById('block2').style.webkitTransform='rotateX('+x+'deg) rotateY('+y+'deg) rotateZ('+z+'deg)';
+ 	document.getElementById('degx-span').innerText=x;
+ 	document.getElementById('degy-span').innerText=y;
+ 	document.getElementById('degz-span').innerText=z;
+ }
+
+ </script>
+<div id="experiment">
+	<div id="block2"></div>
+</div>
+<div id="op">
+	<p>rotate x: <span id="degx-span">0</span>deg</p>
+	<input type="range" min="-360" max="360" id="rotatex" value="0" class="range-control" onmousemove="rotate();"><br>
+	<p>rotate y: <span id="degy-span">0</span>deg</p>
+	<input type="range" min="-360" max="360" id="rotatey" value="0" class="range-control" onmousemove="rotate()"><br>
+	<p>rotate z: <span id="degz-span">0</span>deg</p>
+	<input type="range" min="-360" max="360" id="rotatez" value="0" class="range-control" onmousemove="rotate()">
+</div>

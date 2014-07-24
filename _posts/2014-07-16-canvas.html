@@ -1,0 +1,99 @@
+---
+layout: default
+title: Canvas基础---炫丽的倒计时效果Canvas绘图与动画基础
+---
+<canvas id="canvas" style="border:1px solid #eee;margin:0 auto;">当前浏览器不支持canvas请更换浏览器</canvas>
+<script>
+	window.onload=function(){
+		var canvas=document.getElementById('canvas');
+		if(canvas.getContext('2d')){
+			var context=canvas.getContext('2d');
+			canvas.width=1600;
+			canvas.height=900;
+
+			//用context绘制
+			context.moveTo(10,10);
+			context.lineTo(300,300);
+			context.lineTo(10,300);
+			context.lineTo(10,10);
+			//结束当前绘制
+			context.closePath();
+			//线条
+			context.lineWidth=5;
+			context.strokeStyle='green';
+			context.stroke();
+			//开始新的绘制
+			context.beginPath();
+			context.moveTo(40,10);
+			context.lineTo(330,300);
+			context.closePath();
+			context.strokeStyle='black';
+			context.stroke();
+
+			//实心
+			/*context.fillStyle='rgb(2,100,300)';
+			context.fill();*/
+
+			//七巧板
+			var arr=[
+			{p:[{x:400,y:0},{x:800,y:0},{x:600,y:200}],color:'#ff0'},
+			{p:[{x:800,y:0},{x:800,y:400},{x:600,y:200}],color:'#fc0'},
+			{p:[{x:800,y:400},{x:400,y:400},{x:600,y:200}],color:'#f90'},
+			{p:[{x:400,y:400},{x:400,y:0},{x:600,y:200}],color:'#fc9'}
+			];
+			for(var i=0;i<arr.length;i++){
+				draw(arr[i]);
+			}
+			function draw(piece){
+				context.beginPath();
+				context.moveTo(piece.p[0].x,piece.p[0].y);
+				for(var i=1;i<piece.p.length;i++){
+					console.log(piece.p[i])
+					context.lineTo(piece.p[i].x,piece.p[i].y);
+				}
+				context.fillStyle=piece.color;
+				context.fill();
+				context.closePath();
+			}
+
+
+			//arc 弧线
+			/*context.arc(
+				centerx,centery,radius,
+				staringAngle,endingAngle,
+				aniclockwise=false
+			)*/
+			context.beginPath();
+			context.strokeStyle=5;
+			// context.arc(200,600,100,0,1.5*Math.PI,true);
+			context.arc(200,450,100,0,1.5*Math.PI);
+			context.stroke();
+			context.closePath();
+
+			for(var i=0;i<10;i++){
+				context.beginPath();
+				context.arc(50+i*100,560,40,0,2*Math.PI*(i+1)/10);
+				context.lineWidth=1;
+				context.strokeStyle='green';
+				context.closePath();
+				context.stroke();
+			}
+			for(var i=0;i<10;i++){
+				context.beginPath();
+				context.arc(50+i*100,650,40,0,2*Math.PI*(i+1)/10);
+				context.lineWidth=1;
+				context.strokeStyle='red';
+				context.stroke();
+			}
+			for(var i=0;i<10;i++){
+				context.beginPath();
+				context.arc(50+i*100,750,40,0,2*Math.PI*(i+1)/10);
+				context.fillStyle='orange';
+				context.fill();
+			}
+
+		}else{
+			alert('当前浏览器不支持canvas请更换浏览器');
+		}
+	}
+</script>

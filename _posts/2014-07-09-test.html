@@ -1,0 +1,147 @@
+---
+layout: default
+title: hookbag photo
+---
+<link rel="stylesheet" href="http://dev.hookbag.com/hb3/front/public/style/base/css/bootstrap.css">
+<link rel="stylesheet" href="http://dev.hookbag.com/hb3/front/public/style/v2/css/ug.css">
+<style>
+	.ug-productInfo-01 #ug-photo .ug-productPhoto_sma{position: relative;padding-left: 0;}
+	.ug-productInfo-01 #ug-photo .ug-productPhoto_sma li{list-style-type: none;display: inline-block;}
+</style>
+<script src="/style/base/jquery/jquery.min.js"></script>
+<script>
+	$(function(){
+		var big=$('#ug-productPhoto_big>img');
+		var smaUl=$('.ug-productPhoto_sma');
+		var smaLi=$('.ug-productPhoto_sma li');
+		var smaLen=$('.ug-productPhoto_sma li').length;
+		var imgLen=4;
+		var left;
+		var right;
+		var leftIndex;
+		var rightIndex;
+
+		if(smaLen>imgLen){
+			smaUl.prepend('<li id="sma_left" data-index="0" style="width:auto;opacity:.5;position:absolute;left:-17px;line-height:48px;"><span class="glyphicon glyphicon-chevron-left"></span></li>');
+			smaUl.append('<li id="sma_right" data-index="3" style="width:auto;position:absolute;left:220px;line-height:48px;"><span class="glyphicon glyphicon-chevron-right"></span></li>');
+			left=$('#sma_left');
+			right=$('#sma_right');
+			leftIndex=left.attr('data-index');
+			rightIndex=right.attr('data-index');
+
+			right.click(function(){
+				smaRight(rightIndex,leftIndex);
+			});
+			left.click(function(){
+				smaLeft(leftIndex,rightIndex);
+			});
+		}
+		for(var i=0;i<smaLi.length;i++){
+			if(i>=4) {
+				smaLi.eq(i).hide()
+			}
+			smaLi.eq(i).click(function(){
+				var src=$(this).find('img').attr('data-src');
+				big.fadeOut(200,function(){
+					big.attr('src',src).fadeIn();
+				}).attr('data-index',$(this).index()-1);
+				changeActive($(this));
+			});
+		}
+		big.click(function(){
+			if($('#ug-photoBigger').html()==undefined){
+
+				$('body').append('<div id="ug-photoBigger" style="background:rgba(0,0,0,.8);position:absolute;left:0px;top:0px;width:100%;height:100%;border:1px solid #ddd;border-radius:5px;cursor:pointer;text-align:center;display:none;"><div style="width:400px;margin:100px auto 0;position:relative;"><img src="'+$(this).attr('src').slice(0,-9)+'400" alt="" style=""><span style="color:#fff;position:absolute;left:5px;top:50%;color:#000;" id="ug-bigLeft" class="glyphicon glyphicon-chevron-left"></span><span style="color:#fff;position:absolute;right:5px;top:50%;color:#000;" id="ug-bigRight" class="glyphicon glyphicon-chevron-right"></span></div><p id="ug-photoClose" style="color:#fff"> X close</p></div>');
+					setTimeout(function(){
+						$('#ug-photoBigger').fadeIn();
+					},100);
+			}
+			$('#ug-photoClose').click(function(){
+				$(this).parent().remove();
+			});
+			var index=$(this).attr('data-index');
+			$('#ug-bigLeft').click(function(){
+				index>0?index--:index=0;
+				var src1=smaLi.eq(index).find('img').attr('data-bigger');
+				var src2=smaLi.eq(index).find('img').attr('data-src');
+				$('#ug-photoBigger img').attr('src',src1);
+				big.attr('src',src2);
+				changeActive(smaLi.eq(index));
+				if(index==0) return;
+				console.log(index)
+			});
+			$('#ug-bigRight').click(function(){
+				index<smaLen-1?index++:smaLen-1;
+				var src1=smaLi.eq(index).find('img').attr('data-bigger');
+				var src2=smaLi.eq(index).find('img').attr('data-src');
+				$('#ug-photoBigger img').attr('src',src1);
+				big.attr('src',src2);
+				changeActive(smaLi.eq(index));
+				if(index==smaLen) return;
+				console.log(index)
+			});
+		});
+		function smaRight(rIndex,lIndex){
+				if(rightIndex==smaLen-2) {
+					right.css('opacity','.5')
+				}else	if(rightIndex==smaLen-1) {
+					return;
+				}
+
+				rightIndex++;
+				leftIndex++;
+				if(leftIndex>0) {
+					left.css('opacity','1')
+				}
+				smaLi.eq(rightIndex).show();
+				smaLi.eq(rightIndex-imgLen).hide();
+			changeActive(smaLi.eq(leftIndex));
+			console.log('right'+rightIndex+'left'+leftIndex);
+		}
+		function smaLeft(lIndex,rIndex){
+				if(leftIndex==1) {
+					left.css('opacity','.5')
+				}else	if(leftIndex==0) {
+					return;
+				}
+				if(rightIndex==smaLen-1) {
+					right.css('opacity','1')
+				}
+				smaLi.eq(rightIndex).hide();
+				smaLi.eq(rightIndex-imgLen).show();
+				leftIndex--;
+				rightIndex--;
+			changeActive(smaLi.eq(leftIndex));
+			console.log('right'+rightIndex+'left'+leftIndex);			
+		}
+		function changeActive(box){
+			box.addClass('active').siblings().removeClass('active');
+		}
+	});
+</script>
+<div class="ug-productInfo-01">
+<div class="col-md-3">
+
+<div id="ug-photo">
+	<div id="ug-productPhoto_big"><img src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" alt="" title="点击放大" data-index="0"></div>
+	<ul class="ug-productPhoto_sma">
+		<li class="active"><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.		<li><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.		<li><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/d/a/d79a4474afaaab89/small.jpg" data-src="http://images.hookbag.ca/d/a/d79a4474afaaab89/image.jpg" data-bigger="http://images.hookbag.ca/d/a/d79a4474afaaab89/400" alt=""></li>
+		<li><img class="img-thumbnail" src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/small.jpg" data-src="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/image.jpg" data-bigger="http://images.hookbag.ca/c/f/cb9332a1fb89f8f4/400" alt=""></li>
+	</ul>
+</div>
+
+
+</div>
+</div>

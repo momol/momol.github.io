@@ -1,0 +1,165 @@
+---
+layout: default
+title: 焦点轮播图slide-js
+---
+<style>
+	*{margin: 0;padding: 0;}
+	#slide{
+		width: 600px;height: 300px;overflow: hidden;
+		position: relative;
+		background-color: #ddd;
+		border: 5px solid #eee;border-radius: 10px;
+	}
+	#list{
+		position: absolute;left:0;
+		width: 9999px;
+	}
+	#list li{
+		display: block;float: left;width: 600px;height: 300px;
+		background-color: #fff;
+	}
+	#buttons{
+		position: absolute;bottom: 30px;left: 50%;
+		margin-left: -86px;
+	}
+	#buttons li{
+		background-color: #ddd;
+		cursor: pointer;
+		display: block;width: 10px;height: 10px;
+		border-radius: 50%;border: 1px solid #aaa;
+		float: left;
+		margin: 5px 10px;
+		text-indent:-9999px;
+	}
+	#buttons li.on{
+		background-color: #09c;
+	}
+	.arrow{
+		position: absolute;top: 50%;
+		margin-top: -10px;
+	}
+	#left{
+		left:10px;
+	}
+	#right{
+		right:10px;
+	}
+</style>
+<div id="slide">
+	<ul id="list" style="left:0px;">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+	<ul id="buttons">
+		<li data-index="1" class="on">1</li>
+		<li data-index="2">2</li>
+		<li data-index="3">3</li>
+		<li data-index="4">4</li>
+		<li data-index="5">5</li>
+		<li data-index="6">6</li>
+	</ul>
+	<a href="javascript:;" id="left" class="arrow">left</a>
+	<a href="javascript:;" id="right" class="arrow">right</a>
+</div>
+<script>
+	var $=function(id){
+		return document.getElementById(id);
+	}
+	var slide=$('slide'),
+			list=$('list'),
+			buttons=$('buttons').getElementsByTagName('li'),
+			leftArrow=$('left'),
+			rightArrow=$('right'),
+			left=0,
+			len=5,
+			index=1,
+			animated=false,
+			timer;
+	function showButton(){
+		for(var i=0;i<buttons.length;i++){
+			if(buttons[i].className=='on'){
+				buttons[i].className='';
+				
+			}
+		}
+		buttons[index-1].className='on';
+	}
+	function animate(offset){
+		if(offset==0)
+			return;
+    var time = 300;
+    var inteval = 10;
+    var speed = offset/(time/inteval);
+    var left=parseInt(list.style.left)+offset;
+    animated=true;
+    var go = function (){
+        if ( (speed > 0 && parseInt(list.style.left) < left) || (speed < 0 && parseInt(list.style.left) > left)) {
+            list.style.left = parseInt(list.style.left) + speed + 'px';
+            setTimeout(go, inteval);
+        }
+        else {
+					if(left>0){
+						console.log('111')
+						left=-offset*len;
+					}else if(left<-Math.abs(offset)*len){
+						left=0;
+					}
+					// console.log('left2'+left)
+					list.style.left=left+'px';
+					animated=false;
+        }
+    }
+    go();
+	}
+	function play(){
+		timer=setInterval(function(){
+			rightArrow.onclick();
+		},3000);
+	}
+	function stop(){
+		clearInterval(timer);
+	}
+	rightArrow.onclick=function(){
+		if(animated)
+			return;
+		if(index==6){
+			index=1;
+		}else{
+			index+=1;
+		}
+		showButton();
+		animate(-600);
+	}
+	leftArrow.onclick=function(){
+		if(animated) 
+			return;
+		if(index==1){
+			index=6;
+		}else{
+			index-=1;
+		}
+		showButton();
+		animate(600);
+	}
+	for(var i=0;i<buttons.length;i++){
+		buttons[i].onclick=function(){
+			if(animated)
+				return;
+			if(this.className=='on')
+				return
+			var myIndex=parseInt(this.getAttribute('data-index'));
+			var offset=-600*(myIndex-index);
+			index=myIndex;
+			showButton();
+			animate(offset);
+		}
+	}
+	slide.onmouseover=stop;
+	slide.onmouseout=play;
+
+	play();
+</script>

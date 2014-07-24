@@ -1,0 +1,120 @@
+---
+layout: default
+title: 新手引导
+---
+<style>
+	*{margin: 0;padding: 0;}
+	html{height: 100%;}
+	body{height: 100%;background: url(/mod/tooltips/images/body.png) no-repeat center 0;}
+	#mask{width: 100%;height: 100%;position: absolute;top: 0;left: 0;background-color: #000;opacity: 0.5;filter:alpha(opacity=50);display: none;}
+	#searchTip{position: absolute;width: 980px;height: 800px;left: 50%;margin-left: -490px;display: none;}
+	#searchTip div{position: absolute;display: none;}
+	#searchTip div a{position: absolute;width: 95px;height: 32px;text-indent: -9999px;overflow: hidden;cursor: pointer;}
+	#searchTip div span{position: absolute;width: 30px;height: 30px;text-indent: -9999px;overflow: hidden;cursor: pointer;}
+	#stepA{width: 745px;height: 329px;background: url(/mod/tooltips/images/guide11.png);top: 130px;left: -9px;}
+	#stepA a{top: 231px;left: 490px;}
+	#stepA span{top: 144px;right: 32px;}
+	#stepB{width: 647px;height: 405px;background: url(/mod/tooltips/images/guide21.png);top: 0;right: 0;}
+	#stepB a{bottom: 66px;left: 146px;}
+	#stepB span{top: 195px;right: 285px;}
+	#stepC{width: 654px;height: 257px;background: url(/mod/tooltips/images/guide31.png);top: 294px;left: 319px;}
+	#stepC a{top: 155px;left: 402px;}
+	#stepC span{top: 44px;right: 34px;}
+	#stepD{width: 558px;height: 348px;background: url(/mod/tooltips/images/guide41.png);top: 80px;left: 166px;}
+	#stepD a{top: 246px;left: 306px;}
+	#stepD span{top: 134px;right: 34px;}
+	#stepE{width: 397px;height: 342px;background: url(/mod/tooltips/images/guide51.png);top: 78px;left: 257px;}
+	#stepE a{top: 246px;left: 153px;}
+</style>
+<script>
+	window.onload=function(){
+		var oMask=document.getElementById('mask');
+		var oSearch=document.getElementById('searchTip');
+		var aStep=oSearch.getElementsByTagName('div');
+		var aA=oSearch.getElementsByTagName('a');
+		var aClose=oSearch.getElementsByTagName('span');
+		//mask 父框 第一单元出来
+		var res=getCookie("names");
+		if(res!='momol'){
+			oMask.style.display=oSearch.style.display=aStep[0].style.display='block';
+			for(var i=0;i<aStep.length;i++){
+				//next
+				aA[i].index=i;
+				aA[i].onclick=function(){
+					this.parentNode.style.display='none';
+					if(this.index<aStep.length-1){
+						aStep[this.index+1].style.display='block';
+					}else if(this.index==aStep.length-1){
+						oMask.style.display=oSearch.style.display='none';
+					}
+				}
+
+				//close
+				aClose[i].onclick=function(){
+						oMask.style.display=oSearch.style.display='none';
+				}
+			}
+			
+		}
+		//使用示例
+		setCookie("names","momol",'s20');
+
+	}
+//写cookies
+function setCookie(name,value,time)
+{
+    var strsec = getsec(time);
+    var exp = new Date();
+    exp.setTime(exp.getTime() + strsec*1);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+
+function getsec(str)
+{
+   var str1=str.substring(1,str.length)*1;
+   var str2=str.substring(0,1);
+   if (str2=="s")
+   {
+        return str1*1000;
+   }
+   else if (str2=="h")
+   {
+       return str1*60*60*1000;
+   }
+   else if (str2=="d")
+   {
+       return str1*24*60*60*1000;
+   }
+}
+
+//读取cookies
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return (arr[2]);
+    else
+        return null;
+}
+
+//删除cookies
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+
+</script>
+<div id="mask"></div>
+<div id="searchTip">
+	<div id="stepA"><a href="javascript:;">下一步</a><span title="关闭">关闭</span></div>
+	<div id="stepB"><a href="javascript:;">下一步</a><span title="关闭">关闭</span></div>
+	<div id="stepC"><a href="javascript:;">下一步</a><span title="关闭">关闭</span></div>
+	<div id="stepD"><a href="javascript:;">下一步</a><span title="关闭">关闭</span></div>
+	<div id="stepE"><a href="javascript:;">下一步</a><span title="关闭">关闭</span></div>
+</div>

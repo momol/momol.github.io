@@ -1,0 +1,145 @@
+---
+layout: default
+title: 信息排列
+---
+<style>
+	*{margin:0;padding: 0;}
+	body{font-family: "微软雅黑";font-size: 14px;}
+	ul{list-style:none;}
+	#box{width: 550px;border: 1px solid #aaa;margin: 0 auto;}
+	.top{height: 40px;}
+	.top a{height: 16px;width: 16px;display: block;float: right;margin: 5px;}
+	.btn-list-off{background: #fff url(/mod/info_list/images/btns.jpg) no-repeat -38px 0;}
+	.btn-list-on{background: #fff url(/mod/info_list/images/btns.jpg) no-repeat -21px 0;}
+	.btn-card-on{background: #fff url(/mod/info_list/images/btns.jpg) no-repeat -21px -34px;}
+	.btn-card-off{background: #fff url(/mod/info_list/images/btns.jpg) no-repeat -38px -32px;}
+	#box ul {overflow: hidden;}
+	#box ul li{width: 164px;border: 1px solid #aaa;float: left;margin:5px;}
+	#box ul li .a-img{display: block;float: left;}
+	#box ul li img{width: 100%;float: left;}
+	p a,p span{display: block;line-height: 23px;padding-left: 10px;}
+	.bottom{height: 40px;line-height: 40px;text-align: center;background: #aaa;}
+	.small{width: 50px;height: 50px;margin: 5px;}
+	.con{overflow: hidden;}
+	.list p a,.list p span{line-height: 18px;font-size: 13px;}
+</style>
+<script>
+	window.onload=function(){
+		//获取按钮
+		var listBtn=document.getElementById('btn1');
+		var cardBtn=document.getElementById('btn2');
+		var imgs=document.getElementsByTagName('img');
+
+		listBtn.onclick=function(e){
+			e=e||window.event;
+			e.preventDefault();
+			//改变按钮class值
+			listBtn.className='btn-list-on';
+			cardBtn.className='btn-card-off';
+			//改变每个图片的路径和对应父节点的class值
+			for(var i =0;i<imgs.length;i++){
+				imgs[i].src="http://www.jq22.com/cj2/3DGridEffect/img/2.jpg";
+				imgs[i].parentNode.className='a-img small';
+				document.getElementsByTagName('ul')[0].className='list';
+			}
+		}
+		cardBtn.onclick=function(e){
+			e=e||window.event;
+			e.preventDefault();
+			//改变按钮class值
+			listBtn.className='btn-list-off';
+			cardBtn.className='btn-card-on';
+			//改变每个图片的路径和对应父节点的class值
+			for(var i =0;i<imgs.length;i++){
+				imgs[i].src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg";
+				imgs[i].parentNode.className='a-img';
+			}
+		}
+	}
+</script>
+<div id="box">
+	<div class="top">
+		<a href="" title="列表模式" id="btn1" class="btn-list-off"></a>
+		<a href="" title="卡片模式" id="btn2" class="btn-card-on"></a>
+	</div>
+	<ul id="card">
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+		<li>
+			<div class="con">
+				<a href="" class="a-img">
+					<img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt="">
+				</a>
+				<p>
+					<a href="">boom</a>
+					<span>liaoling</span>
+					<span>21 same Friedns</span>
+				</p>
+			</div>
+			<div class="bottom">未分组好友</div>
+		</li>
+	</ul>
+</div>

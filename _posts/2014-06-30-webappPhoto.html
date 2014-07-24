@@ -1,0 +1,91 @@
+---
+layout: web
+title: 移动端web相册
+---
+<div id="info">
+	<a href="demo.html">demo</a>
+	<ul>
+		<li>1,在手机端浏览器中打开，接近原生APP应用</li>
+		<li>2，打包成Android或IOS的APP，以原生App呈现</li>
+	</ul>
+	<h2>移动端开发tips</h2>
+	<div>
+		<h3>兼容性</h3>
+		<strong>操作系统：</strong>
+		<p>Android IOS Firefox os</p>
+		<strong>内核：</strong>
+		<p>webkite greasemonkey</p>
+		<h3>使用手势操作代替鼠标输入/出事件</h3>
+		<h3>响应式布局</h3>
+		<h3>css3代替DOM animation效果</h3>
+		<p>css3使用设备GPU渲染</p>
+	</div>
+	<h2>开发框架和库</h2>
+	<h3>JQuery mobile</h3>
+	<h3><a href="http://mobileangularui.com/" target="_blank">Angluar mobile</a></h3>
+	<h3><a href="http://zeptojs.com/" target="_blank">Zepto.js</a></h3>
+	<h2>touch事件</h2>
+	<p>pc端——click事件</p>
+	<p>web端——touch事件：（触摸事件）touchstart——touchmove——touchend</p>
+	<p>touchcancel：系统事件</p>
+	<h3><a href="http://zeptojs.com/#touch" target="_blank">touch in zepto.js</a></h3>
+	<p>download<a href="https://github.com/madrobby/zepto/blob/master/src/touch.js#files" target="_blank">https://github.com/madrobby/zepto/blob/master/src/touch.js#files</a></p>
+	<h2>why use touch</h2>
+	<p>click事件300ms延迟，touch事件支持多点触摸，手势操作</p>
+	<h2>Canvas&GPU render</h2>
+	<p><strong>优化技巧</strong>使用Canvas代替Image标签</p>
+	<p>drawImage API</p>
+	<p>drawImage(image,x,y)在Canvas上绘制图片</p>
+	<p>drawImage(image,x,y,width,height)在Canvas上缩放并绘制图片</p>
+	<h3>[Image Object]</h3>
+	<p>预加载图片</p>
+	<p>图片的按比例缩放</p>
+	<pre>eg:var img=new Image();
+	img.onload=function(){
+	debugger
+	}
+	img.src='http://www.baidu.com/img/bdlogo.gif'</pre>
+	<h2>CSS3 Animation</h2>
+	<p><a href="http://daneden.github.io/animate.css/">Animate.css</a></p>
+	<pre>@keyframes
+	animation-name(动画名称)
+	animation-duration(动画持续时间)
+	animation-delay(延迟执行时间)
+	animation-timing-function(动画形变函数指定)
+	animation-play-state(播放状态指定)
+	</pre>
+	<style>
+		@-webkit-keyframes myfirst{
+			0% {background: red;}
+			25% {background: yellow;}
+			50% {background: blue;}
+			100% {background: green;}
+		}
+		@keyframes myfirst{
+			0% {background: red;}
+			25% {background: yellow;}
+			50% {background: blue;}
+			100% {background: green;}
+		}
+		.color{
+			width: 100px;
+			height: 100px;
+			background: red;
+			-webkit-animation-name:myfirst;
+			-webkit-animation-duration:5s;
+			-webkit-animation-timing-function:linear;
+			-webkit-animation-delay:2s;
+			-webkit-animation-iteration-count:infinite;
+			-webkit-animation-direction:alternate;
+			-webkit-animation-play-state:running;
+			animation-name:myfirst;
+			animation-duration:5s;
+			animation-timing-function:linear;
+			animation-delay:2s;
+			animation-iteration-count:infinite;
+			animation-direction:alternate;
+			animation-play-state:running;
+		}
+	</style>
+	<div class="color"></div>
+</div>

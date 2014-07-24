@@ -1,0 +1,273 @@
+---
+layout: default
+title: 购物车
+---
+<style>
+	.fr{float: right;}
+	.clearfix:after{content: '';clear: both;display: block;}
+	#cartTable{border: 1px solid #ddd;border-collapse:collapse;width: 100%;}
+	#cartTable thead{background: #eee;}
+	#cartTable tr.on{background: #f8f8f8;}
+	#cartTable td{padding: 5px 20px;border-bottom: 1px solid #ddd;}
+	#cartTable td img{width:60px;height: 60px;}
+	#cartTable td .count-input{width:40px;text-align: center;}
+	#foot{position: relative;}
+	#selected-view{position: absolute;display: none;bottom:22px;width: 100%;background: #fff;}
+	.arrow.down{display: none;}
+	.show .arrow.down{display: inline;}
+	.show .arrow.up{display: none;}
+	.show #selected-view{display: block;}
+	.show #selected-view img{width:60px;}
+	.show #selectedViewList div{padding: 10px;margin:0 10px;float: left;position: relative;}
+	#selectedViewList div span{display:none;position: absolute;right: 0;top: 0;}
+	#selectedViewList div:hover span{display:block;}
+	.reduce,.add{cursor:pointer;display: inline-block;width: 20px;text-align: center;background: #eee;}
+
+</style>
+<table id="cartTable">
+	<thead>
+		<tr>
+			<td><input type="checkbox" class="check-all check">全选</td>
+			<td>商品</td>
+			<td>单价</td>
+			<td>数量</td>
+			<td>小计</td>
+			<td>操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="checkbox"><input type="checkbox" class="check-one check"></td>
+			<td class="goods"><img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt=""><span>Casio/卡西欧</span></td>
+			<td class="price">5999.88</td>
+			<td class="count">
+				<span class="reduce"></span>
+				<input type="text" class="count-input" value='1'>
+				<span class="add">+</span>
+			</td>
+			<td class="subtotal">5999.88</td>
+			<td class="operation"><span class="delete">删除</span></td>
+		</tr>
+		<tr>
+			<td class="checkbox"><input type="checkbox" class="check-one check"></td>
+			<td class="goods"><img src="http://www.jq22.com/cj2/3DGridEffect/img/2.jpg" alt=""><span>Casio/卡西欧</span></td>
+			<td class="price">1999.88</td>
+			<td class="count">
+				<span class="reduce"></span>
+				<input type="text" class="count-input" value='1'>
+				<span class="add">+</span>
+			</td>
+			<td class="subtotal">1999.88</td>
+			<td class="operation"><span class="delete">删除</span></td>
+		</tr>
+		<tr>
+			<td class="checkbox"><input type="checkbox" class="check-one check"></td>
+			<td class="goods"><img src="http://www.jq22.com/cj2/3DGridEffect/img/1.jpg" alt=""><span>Casio/卡西欧</span></td>
+			<td class="price">5999.88</td>
+			<td class="count">
+				<span class="reduce"></span>
+				<input type="text" class="count-input" value='1'>
+				<span class="add">+</span>
+			</td>
+			<td class="subtotal">5999.88</td>
+			<td class="operation"><span class="delete">删除</span></td>
+		</tr>
+		<tr>
+			<td class="checkbox"><input type="checkbox" class="check-one check"></td>
+			<td class="goods"><img src="http://www.jq22.com/cj2/3DGridEffect/img/2.jpg" alt=""><span>Casio/卡西欧</span></td>
+			<td class="price">1999.88</td>
+			<td class="count">
+				<span class="reduce"></span>
+				<input type="text" class="count-input" value='1'>
+				<span class="add">+</span>
+			</td>
+			<td class="subtotal">1999.88</td>
+			<td class="operation"><span class="delete">删除</span></td>
+		</tr>
+
+	</tbody>
+</table>
+<div id="foot" class="foot">
+	<label class="fl select-all"><input type="checkbox" class="check-all check"> 全选</label>
+	<a href="javascript:;" class="fl delete" id="deleteAll">删除</a>
+	<div class="fr closing">结算</div>
+	<div class="fr total">合计：￥<span id="priceTotal">0.00</span></div>
+	<div class="fr selected" id="selected">已选商品
+		<span id="selectedTotal">0</span>件
+		<span class="arrow up">∧</span>
+		<span class="arrow down">∨</span>
+	</div>
+	<div id="selected-view">
+		<div id="selectedViewList" class="clearfix">
+			<!-- <div><img src="" alt=""><span>取消选择</span></div> -->
+		</div>
+		<span class="arrow"><span class="span"></span></span>
+	</div>
+</div>
+<script>
+	window.onload=function(){
+		//IE没有getElementsByClassName
+		if(!document.getElementsByClassName){
+			document.getElementsByClassName=function(cls){
+				var ret=[];
+				var els=document.getElementsByTagName('*');
+				for(var i =0,len=els.length;i<len;i++){
+					if(els[i].className===cls
+						||els[i].className.indexOf(cls+' ')>=0
+						||els[i].className.indexOf(' '+cls+' ')>=0
+						||els[i].className.indexOf(' '+cls)>=0){
+						ret.push(els[i]);
+					}
+				}
+				return ret;
+			}
+		}
+
+		var cartTable=document.getElementById('cartTable');
+		var tr=cartTable.children[1].rows;//.rows表格元素特有属性：存放节点所有的tr元素
+		var checkInput=document.getElementsByClassName('check');
+		var checkAllInputs=document.getElementsByClassName('check-all');
+		var selectedTotal=document.getElementById('selectedTotal');
+		var priceTotal=document.getElementById('priceTotal');
+		var selected=document.getElementById('selected');
+		var foot=document.getElementById('foot');
+		var selectedViewList=document.getElementById('selectedViewList');
+		var deleteAll=document.getElementById('deleteAll');
+
+		//计算
+		function getTotal(){
+			var selected=0;
+			var price=0;
+			var HTMLstr='';
+			for(var i=0,len=tr.length;i<len;i++){
+				if(tr[i].getElementsByTagName('input')[0].checked){
+					tr[i].className='on';
+					selected+=parseInt(tr[i].getElementsByTagName('input')[1].value);
+					price+=parseFloat(tr[i].cells[4].innerHTML);
+					HTMLstr+='<div><img src="'+tr[i].getElementsByTagName('img')[0].src+'"><span class="del" index="'+i+'">取消选择</span></div>'
+				}else{
+					tr[i].className=''
+				}
+			}
+			selectedTotal.innerHTML=selected;
+			priceTotal.innerHTML=price.toFixed(2);//保留两位小数
+			selectedViewList.innerHTML=HTMLstr;
+		}
+		//小计
+		function getSubTotal(tr){
+			var tds=tr.cells;
+			var price=parseFloat(tds[2].innerHTML);
+			var count=parseInt(tr.getElementsByTagName('input')[1].value);
+			var subTotal=parseFloat(price*count);
+			tds[4].innerHTML=subTotal.toFixed(2);
+		}
+
+		//单选、全选
+		for(var i =0,len=checkInput.length;i<len;i++){
+			checkInput[i].onclick=function(){
+				if(this.className==='check-all check'){
+					for(var j=0;j<checkInput.length;j++){
+						checkInput[j].checked=this.checked;
+					}
+				}
+				if(this.checked==false){
+					for(var k=0;k<checkAllInputs.length;k++){
+						checkAllInputs[k].checked=this.checked;
+					}
+				}
+				getTotal();
+			}
+		}
+
+		//已选商品
+		selected.onclick=function(){
+			if(foot.className=='foot'){
+				if(selectedTotal.innerHTML!=0){
+					foot.className='foot show';
+				}
+			}else{
+				foot.className='foot';
+			}
+		}
+		//删除已选商品
+		selectedViewList.onclick=function(e){
+			e=e||window.event;
+			var el=e.srcElement;
+			if(el.className=='del'){
+				var index=el.getAttribute('index');
+				var input=tr[index].getElementsByTagName('input')[0];
+				input.checked=false;
+				input.onclick();
+			}
+		}
+		//单行数量计算与删除
+		for (var i = 0; i<tr.length;i++) {
+			tr[i].onclick=function(e){
+				e=e||window.event;
+				var el=e.srcElement;
+				var cls=el.className;
+				var input=this.getElementsByTagName('input')[1];
+				var val=parseInt(input.value);
+				var reduce=this.getElementsByTagName('span')[1];
+				switch(cls){
+					case 'add':
+						input.value=val+1;
+						reduce.innerHTML='-';
+						getSubTotal(this);
+						break;
+					case 'reduce':
+						if(val>1)	input.value=val-1;
+						if(val<=1) reduce.innerHTML='';
+						getSubTotal(this);
+						break;
+					case 'delete':
+						var conf=confirm('确定要删除么？');
+						if(conf){
+							this.parentNode.removeChild(this);
+							getTotal();
+						}
+						break;
+					default :
+						break;
+				}
+				getTotal();
+			}
+			tr[i].getElementsByTagName('input')[1].onkeyup=function(){
+				var val=parseInt(this.value);
+				var tr=this.parentNode.parentNode;
+				var reduce=tr.getElementsByTagName('span')[1];
+				if(isNaN(val)||val<1) {
+					val=1;
+				}
+				this.value=val;
+				if(val<=1){
+					reduce.innerHTML='';
+				}else{
+					reduce.innerHTML='-';
+				}
+				getSubTotal(tr);
+				getTotal();
+			}
+		}
+
+		//删除全部
+		deleteAll.onclick=function(){
+			if(selectedTotal.innerHTML!='0'){
+
+				var conf=confirm('确定删除么?');
+				if(conf){
+					for(var i=0;i<tr.length;i++){
+						var input=tr[i].getElementsByTagName('input')[0];
+						if(input.checked){
+							tr[i].parentNode.removeChild(tr[i]);
+							i--;
+						}
+					}
+				}
+			}
+		}
+		//进入页面默认全选
+		checkAllInputs[0].checked=true;
+		checkAllInputs[0].onclick();
+	}
+</script>
